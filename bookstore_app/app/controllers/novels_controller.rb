@@ -44,6 +44,14 @@ class NovelsController < ApplicationController
     redirect_to novels_path
   end
 
+  def search
+    @novel = if params[:term]
+      Novel.where('title LIKE ? OR format LIKE ?', "%#{params[:term]}", "%#{params[:term]}")
+    else
+      Novel.all
+    end
+  end
+
   private
     def novel_params
       params.require(:novel) .permit(:title, :genre_id, :author_id, :publisher_id, :price, :isbn, :publication, :format, :description, :pages)
